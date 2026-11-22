@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14532d">
+<meta name="description" content="10 दिन का गुटखा छोड़ो चैलेंज ट्रैकर">
+<title>गुटखा छोड़ो चैलेंज</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif;color:#17231b;background:#f3f7f3}
+*{box-sizing:border-box}body{margin:0;padding:18px;max-width:560px;margin:auto}
+header{background:linear-gradient(135deg,#14532d,#15803d);color:white;padding:24px 20px;border-radius:22px;text-align:center;box-shadow:0 8px 24px #14532d22}
+h1{margin:0 0 6px;font-size:27px}.sub{opacity:.9}.prize{font-size:38px;font-weight:800;margin:12px 0 0}
+.panel{background:white;border:1px solid #e0e9e0;border-radius:18px;padding:16px;margin-top:15px;box-shadow:0 3px 12px #1231}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#f1f7f1;border-radius:13px;padding:12px;text-align:center}.num{font-size:25px;font-weight:800;color:#166534}
+.bar{height:11px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin-top:12px}.fill{height:100%;background:#16a34a;width:0%;transition:.2s}
+.day{border:1px solid #e5e7eb;border-radius:14px;padding:12px;margin-top:10px}.daytop{display:flex;justify-content:space-between;align-items:center;font-weight:700}.choices{display:flex;gap:7px;margin-top:10px}.choices button{flex:1;border:1px solid #d1d5db;background:#f9fafb;border-radius:10px;padding:10px 5px;font-size:13px;font-weight:650;color:#26352a}.choices button.selected-no{background:#dcfce7;border-color:#16a34a;color:#166534}.choices button.selected-yes{background:#fee2e2;border-color:#dc2626;color:#991b1b}.choices button.selected-pending{background:#e5e7eb;border-color:#6b7280}
+.notice{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:14px;line-height:1.65}.notice h2{font-size:17px;margin:0 0 7px;color:#9a3412}.result{font-size:21px;font-weight:800;margin-top:10px}.muted{font-size:12px;color:#647067;line-height:1.5}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1;min-width:130px;padding:12px;border:0;border-radius:12px;font-weight:700;background:#166534;color:white}.actions .secondary{background:#e5e7eb;color:#1f2937}
+.install{display:none;width:100%;padding:13px;border:0;border-radius:12px;background:#14532d;color:white;font-weight:700;font-size:15px;margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🚭 गुटखा छोड़ो चैलेंज</h1>
+  <div class="sub">लगातार 10 दिन • ईमानदारी की परीक्षा</div>
+  <div class="prize">₹200</div>
+  <div class="sub">₹20 प्रतिदिन सफल रहने पर</div>
+</header>
+<section class="panel">
+  <div class="stats">
+    <div class="stat"><div class="num" id="percent">0%</div><div>चैलेंज पूरा</div></div>
+    <div class="stat"><div class="num" id="daysCount">0/10</div><div>गुटखा नहीं खाया</div></div>
+  </div>
+  <div class="bar"><div class="fill" id="progress"></div></div>
+  <p class="muted">हर दिन के अंत में अपना सही स्टेटस चुनें। अभी यह हिसाब इसी फोन/ब्राउज़र में सेव रहेगा।</p>
+  <button class="install" id="installBtn">📲 मोबाइल में ऐप इंस्टॉल करें</button>
+</section>
+<section class="panel">
+  <h2 style="margin:0">📅 रोज का हिसाब</h2>
+  <div id="days"></div>
+</section>
+<section class="panel">
+  <div class="notice">
+    <h2>⚠️ विश्वास की शर्त</h2>
+    अगर तुमने गुटखा खाकर भी झूठ बोला कि मैंने नहीं खाया, तो तुम सिर्फ ₹200 नहीं हारोगे, बल्कि मेरा तुम पर से विश्वास भी खो दोगे। पैसा दोबारा कमाया जा सकता है, लेकिन टूटा हुआ विश्वास वापस पाना मुश्किल होता है। गलती हो जाए तो सच बता देना—धोखा मत देना। यह चैलेंज तुम्हारी ईमानदारी और खुद पर काबू रखने की परीक्षा है।
+  </div>
+</section>
+<section class="panel">
+  <h2 style="margin:0 0 8px">🏁 फाइनल रिजल्ट</h2>
+  <div class="result" id="result">चैलेंज शुरू करो 💪</div>
+  <p class="muted" id="resultNote">लगातार 10 दिन पूरे होने पर ही ₹200 का इनाम मिलेगा। बीच में गुटखा खाने पर यह 10-दिन का चैलेंज रीसेट होगा।</p>
+  <div class="actions" style="margin-top:12px">
+    <button onclick="resetChallenge()" class="secondary">नया चैलेंज शुरू करें</button>
+    <button onclick="shareResult()">रिजल्ट शेयर करें</button>
+  </div>
+</section>
+<p class="muted" style="text-align:center;margin:18px 4px">यह ट्रैकर भरोसे पर आधारित है—सच बोलना सबसे ज़रूरी है।</p>
+<script>
+const KEY='gutkhaChallengeV1';
+let state=JSON.parse(localStorage.getItem(KEY)||'null')||{days:Array(10).fill('pending'),started:new Date().toISOString()};
+function save(){localStorage.setItem(KEY,JSON.stringify(state));render()}
+function choose(i,v){
+  if(state.days.some(x=>x==='yes')) return;
+  state.days[i]=v;
+  if(v==='yes') state.days=state.days.map((x,j)=>j<=i?x:'pending');
+  save();
+}
+function render(){
+  const root=document.getElementById('days');root.innerHTML='';
+  state.days.forEach((v,i)=>{
+    const d=document.createElement('div');d.className='day';
+    const label=v==='no'?'₹20 सफल':v==='yes'?'चैलेंज फेल':'बाकी है';
+    d.innerHTML=`<div class="daytop"><span>दिन ${i+1}</span><span>${label}</span></div>
+    <div class="choices">
+      <button class="${v==='pending'?'selected-pending':''}" onclick="choose(${i},'pending')">बाकी है</button>
+      <button class="${v==='no'?'selected-no':''}" onclick="choose(${i},'no')">नहीं खाया 👍</button>
+      <button class="${v==='yes'?'selected-yes':''}" onclick="choose(${i},'yes')">खा लिया ❌</button>
+    </div>`;
+    root.appendChild(d);
+  });
+  const count=state.days.filter(x=>x==='no').length,failed=state.days.includes('yes'),pct=Math.round(count/10*100);
+  document.getElementById('percent').textContent=pct+'%';
+  document.getElementById('daysCount').textContent=count+'/10';
+  document.getElementById('progress').style.width=pct+'%';
+  const r=document.getElementById('result'),n=document.getElementById('resultNote');
+  if(failed){r.textContent='₹0 — चैलेंज फेल';r.style.color='#b91c1c';n.textContent='ईमानदारी से गलती बताना भी अच्छी बात है। नया 10-दिन का चैलेंज शुरू कर सकते हो।';}
+  else if(count===10){r.textContent='🎉 ₹200 जीत गए!';r.style.color='#15803d';n.textContent='शाबाश! लगातार 10 दिन पूरे।';}
+  else{r.textContent='₹'+(count*20)+' / ₹200';r.style.color='#166534';n.textContent='अभी चैलेंज जारी है। अंतिम इनाम 10 दिन पूरे होने पर मिलेगा।';}
+}
+function resetChallenge(){
+ if(!confirm('क्या पुराना हिसाब हटाकर नया 10-दिन का चैलेंज शुरू करना है?'))return;
+ state={days:Array(10).fill('pending'),started:new Date().toISOString()};save();
+}
+function shareResult(){
+ const count=state.days.filter(x=>x==='no').length;
+ const msg=`🚭 गुटखा छोड़ो चैलेंज\n${count}/10 दिन सफल\n${Math.round(count/10*100)}% पूरा\nनियम: लगातार 10 दिन गुटखा नहीं खाना। झूठ नहीं बोलना—भरोसा सबसे ज़रूरी है।`;
+ if(navigator.share)navigator.share({text:msg}).catch(()=>{});
+ else if(navigator.clipboard)navigator.clipboard.writeText(msg).then(()=>alert('रिजल्ट कॉपी हो गया'));
+ else alert(msg);
+}
+render();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));}
+let installPrompt;
+window.addEventListener('beforeinstallprompt',e=>{
+ e.preventDefault(); installPrompt=e;
+ const b=document.getElementById('installBtn'); b.style.display='block';
+ b.addEventListener('click',async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;b.style.display='none';},{once:true});
+});
+</script>
+</body>
+</html>
